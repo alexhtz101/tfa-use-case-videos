@@ -1,148 +1,99 @@
 import React, { useState } from 'react';
-import { ChevronDown, ChevronUp, ChevronRight, Target, Shuffle, MessageSquare, Compass, Wrench, Focus, Grid3X3, RotateCw, CheckCircle, XCircle, AlertCircle, Calculator, TrendingUp, Send, Loader2, Sparkles, ClipboardList, MessageCircle, HelpCircle, Shield, Layers, Eye, Play, Info, BookOpen, Home, ExternalLink, ArrowRight } from 'lucide-react';
+import { ChevronDown, ChevronUp, ChevronRight, Target, Shuffle, MessageSquare, Compass, Wrench, Focus, Grid3X3, RotateCw, CheckCircle, XCircle, AlertCircle, Calculator, TrendingUp, Send, Loader2, Sparkles, ClipboardList, MessageCircle, HelpCircle, Shield, Layers, Eye, Play, Info, BookOpen, Home, ExternalLink, ArrowRight, FlaskConical, Microscope, LineChart, Beaker, Atom, Lightbulb } from 'lucide-react';
 import './App.css';
 
 // ============================================
 // LANDING PAGE COMPONENT
 // ============================================
-function LandingPage({ onSelectMath }) {
+function LandingPage({ onSelectMath, onSelectScience }) {
   const subjects = [
     {
       id: 'ela',
-      name: 'English Language Arts',
-      shortName: 'ELA',
-      description: 'A comprehensive framework for integrating AI into secondary ELA instruction while preserving the cognitive work that builds literacy skills.',
+      name: 'ELA',
+      description: 'English Language Arts framework for integrating AI into secondary ELA core instruction while preserving rigor and student agency.',
       icon: BookOpen,
-      color: '#23abe1',
-      bgColor: '#e8f6fc',
-      status: 'live',
+      status: 'available',
       external: true,
-      url: 'https://hqim.ai'
+      url: 'https://hqim.ai/#overview'
     },
     {
       id: 'math',
-      name: 'Mathematics',
-      shortName: 'Math',
-      description: 'Guidance for using AI to support mathematical thinking and problem-solving without bypassing the productive struggle that builds understanding.',
-      icon: Calculator,
-      color: '#7c3aed',
-      bgColor: '#ede9fe',
-      status: 'live',
+      name: 'Math',
+      description: 'A framework for productive AI use in mathematics instruction.',
+      icon: Layers,
+      status: 'beta',
+      external: false
+    },
+    {
+      id: 'science',
+      name: 'Science',
+      description: 'A framework for AI integration in science classrooms — supporting inquiry-based learning and scientific reasoning.',
+      icon: Compass,
+      status: 'beta',
+      external: false
+    },
+    {
+      id: 'history',
+      name: 'History',
+      description: 'A framework for AI use in history and social studies — preserving critical analysis of sources and historical thinking.',
+      icon: ClipboardList,
+      status: 'coming',
       external: false
     }
   ];
 
   return (
     <div className="landing-container">
-      {/* Hero Section */}
-      <section className="landing-hero">
-        <div className="landing-hero-content">
-          <p className="landing-hero-label">AI for Equity</p>
-          <h1 className="landing-hero-title">
-            Instructional Frameworks for AI
-          </h1>
-          <p className="landing-hero-subtitle">
-            Subject-specific guidance for integrating AI into core instruction—ensuring technology
-            amplifies rather than replaces the cognitive work students need to grow.
-          </p>
-        </div>
+      {/* Header */}
+      <section className="landing-header">
+        <h1 className="landing-title">Explore the Frameworks</h1>
+        <p className="landing-subtitle">Practical frameworks for integrating AI into K-12 instruction</p>
       </section>
 
-      {/* Partner Logos */}
-      <section className="landing-partners">
-        <p className="landing-partners-label">Developed in partnership with</p>
-        <div className="landing-partners-logos">
-          <img src="/Logos/commonlit-logo.png" alt="CommonLit" className="partner-logo" />
-          <img src="/Logos/zearn-logo.svg" alt="Zearn" className="partner-logo" />
-        </div>
-      </section>
+      {/* Subject Cards Grid */}
+      <section className="frameworks-grid">
+        {subjects.map((subject) => {
+          const IconComponent = subject.icon;
+          const isClickable = subject.status === 'available' || subject.status === 'beta';
+          const isAvailable = subject.status === 'available';
 
-      {/* Subject Cards */}
-      <section className="landing-subjects">
-        <h2 className="landing-section-title">Select a Subject Framework</h2>
-        <div className="subject-cards-grid">
-          {subjects.map((subject) => {
-            const IconComponent = subject.icon;
-            return (
-              <div
-                key={subject.id}
-                className="subject-card"
-                onClick={() => {
+          return (
+            <div
+              key={subject.id}
+              className={`framework-card ${subject.status === 'coming' ? 'coming-soon' : ''}`}
+              onClick={() => {
+                if (isClickable) {
                   if (subject.external) {
                     window.open(subject.url, '_blank');
-                  } else {
+                  } else if (subject.id === 'math') {
                     onSelectMath();
+                  } else if (subject.id === 'science') {
+                    onSelectScience();
                   }
-                }}
-                style={{ '--subject-color': subject.color, '--subject-bg': subject.bgColor }}
-              >
-                <div className="subject-card-icon">
-                  <IconComponent size={32} />
-                </div>
-                <h3 className="subject-card-name">{subject.name}</h3>
-                <p className="subject-card-description">{subject.description}</p>
-                <button className="subject-card-btn">
-                  {subject.external ? (
-                    <>
-                      Visit Framework
-                      <ExternalLink size={16} />
-                    </>
-                  ) : (
-                    <>
-                      Explore Framework
-                      <ArrowRight size={16} />
-                    </>
-                  )}
-                </button>
+                }
+              }}
+              style={{ cursor: isClickable ? 'pointer' : 'default' }}
+            >
+              <span className={`framework-badge ${subject.status}`}>
+                {isAvailable ? 'AVAILABLE NOW' : subject.status === 'beta' ? 'BETA' : 'COMING SOON'}
+              </span>
+
+              <div className={`framework-icon ${isClickable ? 'active' : ''}`}>
+                <IconComponent size={28} />
               </div>
-            );
-          })}
-        </div>
-      </section>
 
-      {/* Core Principles Preview */}
-      <section className="landing-principles">
-        <h2 className="landing-section-title">Core Principles Across All Subjects</h2>
-        <p className="landing-section-subtitle">
-          Every framework is built on the same foundation: AI should extend learning, not replace it.
-        </p>
-        <div className="principles-preview-grid">
-          <div className="principle-preview-card">
-            <div className="principle-preview-icon" style={{ background: '#dbeafe' }}>
-              <HelpCircle size={24} color="#2563eb" />
-            </div>
-            <h4>Socratic Questioning</h4>
-            <p>AI asks probing questions that help students examine their reasoning.</p>
-          </div>
-          <div className="principle-preview-card">
-            <div className="principle-preview-icon" style={{ background: '#ffedd5' }}>
-              <Shield size={24} color="#ea580c" />
-            </div>
-            <h4>Productive Resistance</h4>
-            <p>AI provides pushback that students must address and defend against.</p>
-          </div>
-          <div className="principle-preview-card">
-            <div className="principle-preview-icon" style={{ background: '#f3e8ff' }}>
-              <Layers size={24} color="#9333ea" />
-            </div>
-            <h4>Complexity Injection</h4>
-            <p>AI introduces edge cases that deepen engagement within the task.</p>
-          </div>
-          <div className="principle-preview-card">
-            <div className="principle-preview-icon" style={{ background: '#dcfce7' }}>
-              <Play size={24} color="#16a34a" />
-            </div>
-            <h4>Outcome Simulation</h4>
-            <p>AI models results that require student interpretation.</p>
-          </div>
-        </div>
-      </section>
+              <h3 className="framework-name">{subject.name}</h3>
+              <p className="framework-description">{subject.description}</p>
 
-      {/* Footer */}
-      <footer className="landing-footer">
-        <p>Instructional Frameworks for AI</p>
-        <p className="landing-footer-subtitle">Integrating AI into Core Instruction Across Subjects</p>
-      </footer>
+              {isClickable && (
+                <a className="framework-link">
+                  Explore <ChevronRight size={16} />
+                </a>
+              )}
+            </div>
+          );
+        })}
+      </section>
     </div>
   );
 }
@@ -517,7 +468,7 @@ Be helpful, specific, and practical. If the teacher asks for modifications, prov
                   />
                   <div>
                     <p style={{ fontWeight: 500, color: 'var(--color-text)', fontSize: '0.9rem' }}>{move.move}</p>
-                    <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', fontStyle: 'italic', marginTop: '0.25rem' }}>"{move.prompt}"</p>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', fontStyle: 'italic', marginTop: '0.25rem' }}>{move.prompt}</p>
                   </div>
                 </label>
               ))}
@@ -597,33 +548,20 @@ Be helpful, specific, and practical. If the teacher asks for modifications, prov
         />
       </section>
 
-      {/* Step 3: Select AI Extension Moves */}
-      {selectedSkill && (
-        <section className="designer-section">
-          <div className="step-header">
-            <span className="step-number" style={{ background: '#23abe1' }}>3</span>
-            <h3>Select AI Extension Moves</h3>
-          </div>
-          <p className="section-description">Select moves from the Neutral and Uphold Rigor tiers that fit this practice.</p>
+      {/* Step 3: Select AI Moves */}
+      <section className="designer-section" style={{ opacity: selectedSkill ? 1 : 0.5 }}>
+        <div className="step-header">
+          <span className="step-number" style={{ background: '#23abe1' }}>3</span>
+          <h3>Select AI Moves</h3>
+        </div>
+        <p className="section-description">Select moves from the Neutral and Uphold Rigor tiers that fit this practice.</p>
 
-          {/* Collapse Rigor - What to Avoid */}
-          <div className="tier-block">
-            <div className="tier-block-header">
-              <span className="tier-dot collapse"></span>
-              <span className="tier-block-label collapse">Collapse Rigor — What to Avoid</span>
-            </div>
-            <div className="collapse-warning">
-              <p>These prompts have AI do the mathematical reasoning for students:</p>
-              <div className="collapse-items">
-                {selectedSkill.aiExtension.collapseRigor.map((item, idx) => (
-                  <div key={idx} className="collapse-item">
-                    <XCircle size={14} />
-                    <span style={{ fontStyle: 'italic' }}>"{item.prompt}"</span>
-                  </div>
-                ))}
-              </div>
-            </div>
+        {!selectedSkill ? (
+          <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)', background: 'var(--color-bg)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)' }}>
+            <p>Please select a Standard for Mathematical Practice above to see available AI moves.</p>
           </div>
+        ) : (
+          <>
 
           {/* Neutral Tier */}
           <div className="tier-block">
@@ -680,13 +618,14 @@ Be helpful, specific, and practical. If the teacher asks for modifications, prov
               ) : (
                 <>
                   <Sparkles size={20} />
-                  Generate Contextualized Directions & Rubric
+                  Generate Lesson Materials
                 </>
               )}
             </button>
           </div>
-        </section>
-      )}
+        </>
+        )}
+      </section>
 
       {/* Generated Outputs */}
       {generatedOutputs && (
@@ -1441,7 +1380,7 @@ const PrincipleDropdown = ({ principle, moves, tierColor = 'green' }) => {
           {moves.map((item, idx) => (
             <div key={idx} className="framework-move-item">
               <p className="move-name">{item.move}</p>
-              <p className="move-prompt">"{item.prompt}"</p>
+              <p className="move-prompt">{item.prompt}</p>
             </div>
           ))}
         </div>
@@ -1668,6 +1607,1232 @@ const SkillCard = ({ skill, isExpanded, onToggle }) => {
     </div>
   );
 };
+
+// ============================================
+// SCIENCE FRAMEWORK DATA
+// ============================================
+const scienceAiExtensionPrinciples = [
+  {
+    id: 'socratic',
+    name: 'Socratic Questioning',
+    shortName: 'Socratic',
+    definition: 'AI asks probing questions that help students examine their reasoning, surface assumptions, and deepen understanding.',
+    icon: HelpCircle,
+    color: 'blue',
+    tier: 'uphold'
+  },
+  {
+    id: 'resistance',
+    name: 'Productive Resistance',
+    shortName: 'Resistance',
+    definition: 'AI provides counterarguments, alternative perspectives, or skeptical pushback that students must address and defend against.',
+    icon: Shield,
+    color: 'orange',
+    tier: 'uphold'
+  },
+  {
+    id: 'complexity',
+    name: 'Complexity Injection',
+    shortName: 'Complexity',
+    definition: 'AI introduces complicating factors, edge cases, or unconsidered dimensions that deepen engagement within the original task scope.',
+    icon: Layers,
+    color: 'purple',
+    tier: 'uphold'
+  },
+  {
+    id: 'mirroring',
+    name: 'Reflective Mirroring',
+    shortName: 'Mirroring',
+    definition: 'AI summarizes, restates, or makes explicit what students have produced so they can evaluate their own thinking.',
+    icon: Eye,
+    color: 'teal',
+    tier: 'neutral'
+  },
+  {
+    id: 'simulation',
+    name: 'Outcome Simulation',
+    shortName: 'Simulation',
+    definition: 'AI models what happens when student proposals are implemented, generating results that require interpretation.',
+    icon: Play,
+    color: 'green',
+    tier: 'uphold'
+  },
+  {
+    id: 'information',
+    name: 'Strategic Information Provision',
+    shortName: 'Information',
+    definition: 'AI provides reference information, terminology, or structural options without performing the reasoning or analysis.',
+    icon: Info,
+    color: 'indigo',
+    tier: 'neutral'
+  },
+  {
+    id: 'feedback',
+    name: 'Constructive Feedback',
+    shortName: 'Feedback',
+    definition: 'AI identifies gaps, weaknesses, or inconsistencies in student work without providing the solutions or fixes.',
+    icon: MessageSquare,
+    color: 'rose',
+    tier: 'neutral'
+  }
+];
+
+const scienceSkillsData = [
+  {
+    id: 1,
+    title: "Asking Questions & Defining Problems",
+    standards: "SEP-1",
+    icon: HelpCircle,
+    description: "Students ask questions about phenomena to clarify and seek information, or define problems to specify criteria and constraints for solutions.",
+    humanLift: [
+      { step: "Observe the Phenomenon Closely", detail: "Notice details, record observations, identify what's surprising or puzzling." },
+      { step: "Distinguish Observations from Inferences", detail: "Separate what you directly observe from what you think is happening." },
+      { step: "Generate Multiple Questions", detail: "Brainstorm questions that could be investigated—aim for quantity before quality." },
+      { step: "Categorize Question Types", detail: "Sort questions into testable vs. non-testable, cause-effect vs. descriptive." },
+      { step: "Prioritize for Investigation", detail: "Identify which questions are most important and feasible to investigate." }
+    ],
+    aiExtension: {
+      role: "Question Refiner",
+      description: "AI helps students sharpen and prioritize their questions—but does not generate questions for the student.",
+      upholdRigor: {
+        socratic: [
+          { move: "Probe whether questions are testable", prompt: '"Here are the questions I generated about this phenomenon. Ask me questions that help me figure out which ones are actually testable."' }
+        ],
+        resistance: [
+          { move: "Challenge vague or overly broad questions", prompt: '"I think my main question is this. Ask me questions that help me make it more specific and investigable."' }
+        ],
+        complexity: [
+          { move: "Explore what variables could be manipulated", prompt: '"Ask me questions about what I could change and what I could measure in an investigation."' }
+        ],
+        mirroring: [
+          { move: "Reflect back question assumptions", prompt: '"What am I assuming about this phenomenon in my question? Reflect back what you hear me taking for granted."' }
+        ],
+        simulation: [
+          { move: "Project what answers might look like", prompt: '"If I investigate this question, what kinds of answers might I get? Help me think through possibilities."' }
+        ],
+        information: [
+          { move: "Clarify question types", prompt: '"What types of scientific questions exist (descriptive, comparative, cause-effect)? Help me categorize mine."' }
+        ],
+        feedback: [
+          { move: "Identify gaps in question coverage", prompt: '"What aspects of this phenomenon do my questions not address? Point to gaps without filling them."' }
+        ]
+      },
+      collapseRigor: [
+        { move: "Generating questions about the phenomenon", prompt: '"What questions should I ask about this phenomenon?"' },
+        { move: "Explaining what\'s happening", prompt: '"Why does this phenomenon occur?"' }
+      ]
+    },
+    returnToHuman: {
+      task: "Refine and Prioritize Your Questions",
+      description: "Based on the AI conversation, revise your question list. Select the top 2-3 questions that are most investigable.",
+      criteria: ["Questions refined to be specific and testable", "Clear prioritization with rationale"]
+    },
+    evidence: {
+      artifacts: ["Initial question brainstorm list (BEFORE AI)", "Chat transcript showing question refinement", "Final prioritized questions"],
+      reflection: "How did your questions change after the AI conversation?"
+    }
+  },
+  {
+    id: 2,
+    title: "Developing & Using Models",
+    standards: "SEP-2",
+    icon: Atom,
+    description: "Students develop, use, and revise models to describe, predict, and explain phenomena.",
+    humanLift: [
+      { step: "Identify What Needs Explaining", detail: "Clarify the phenomenon or system the model should represent." },
+      { step: "Draft an Initial Model", detail: "Create a visual, physical, or conceptual model showing components and relationships." },
+      { step: "Label Key Components", detail: "Identify and name the parts of the system and how they interact." },
+      { step: "Identify Model Limitations", detail: "Note what the model doesn't show or where it might break down." }
+    ],
+    aiExtension: {
+      role: "Model Challenger",
+      description: "AI pressure-tests student models by asking about limitations and predictions—but does not create or fix the model.",
+      upholdRigor: {
+        socratic: [
+          { move: "Probe model component relationships", prompt: '"Ask me questions about how the parts of my model connect to each other."' }
+        ],
+        resistance: [
+          { move: "Challenge whether model explains all observations", prompt: '"Here\'s my model. Ask me questions that help me identify what it doesn\'t explain well."' }
+        ],
+        complexity: [
+          { move: "Explore what evidence would revise the model", prompt: '"Ask me questions about what new evidence might cause me to change my model."' }
+        ],
+        mirroring: [
+          { move: "Reflect back model claims", prompt: '"Summarize what my model is claiming about this phenomenon."' }
+        ],
+        simulation: [
+          { move: "Ask what the model predicts in new situations", prompt: '"My model works for situation A. Ask me if it would still work in new situations."' }
+        ],
+        information: [
+          { move: "Clarify model types", prompt: '"What types of scientific models exist? Help me categorize mine."' }
+        ],
+        feedback: [
+          { move: "Probe for missing components", prompt: '"Ask me questions about whether my model is missing any important parts."' }
+        ]
+      },
+      collapseRigor: [
+        { move: "Drawing or describing the model", prompt: '"Can you draw a model of this for me?"' },
+        { move: "Fixing the model for the student", prompt: '"My model doesn\'t work—can you correct it?"' }
+      ]
+    },
+    returnToHuman: {
+      task: "Revise Your Model Based on Limitations",
+      description: "Based on limitations identified in the AI conversation, revise your model.",
+      criteria: ["Model revised to address identified limitations", "Annotations explaining what changed and why"]
+    },
+    evidence: {
+      artifacts: ["Initial model sketch (BEFORE AI)", "Chat transcript showing model critique", "Revised model with annotations"],
+      reflection: "What limitation in your model did the AI conversation help you identify?"
+    }
+  },
+  {
+    id: 3,
+    title: "Planning & Carrying Out Investigations",
+    standards: "SEP-3",
+    icon: FlaskConical,
+    description: "Students plan and conduct investigations to produce data that can serve as evidence.",
+    humanLift: [
+      { step: "Identify the Question to Answer", detail: "Clarify what the investigation is trying to figure out." },
+      { step: "Identify Variables", detail: "Determine independent, dependent, and controlled variables." },
+      { step: "Design the Procedure", detail: "Outline step-by-step what will be done, measured, and recorded." },
+      { step: "Consider Reliability", detail: "Plan for multiple trials, appropriate sample sizes, and controls." }
+    ],
+    aiExtension: {
+      role: "Investigation Auditor",
+      description: "AI challenges investigation design by probing for flaws and gaps—but does not design the investigation.",
+      upholdRigor: {
+        socratic: [
+          { move: "Question measurement choices", prompt: '"I\'m planning to measure this. Ask me questions about whether that will answer my question."' }
+        ],
+        resistance: [
+          { move: "Challenge variable control", prompt: '"Here\'s my investigation plan. Ask me about variables I might not be controlling."' }
+        ],
+        complexity: [
+          { move: "Explore alternative approaches", prompt: '"Ask me about other ways I could investigate this question."' }
+        ],
+        mirroring: [
+          { move: "Reflect back investigation logic", prompt: '"Summarize the logic of my investigation—how does my procedure answer my question?"' }
+        ],
+        simulation: [
+          { move: "Project possible outcomes", prompt: '"What different results might I get? Ask me what each would mean."' }
+        ],
+        information: [
+          { move: "Clarify investigation types", prompt: '"What types of investigations exist? Help me categorize mine."' }
+        ],
+        feedback: [
+          { move: "Identify gaps in procedure", prompt: '"What steps are missing from my procedure? Point to gaps without filling them."' }
+        ]
+      },
+      collapseRigor: [
+        { move: "Writing procedures for the student", prompt: '"Can you write a procedure for investigating this?"' },
+        { move: "Identifying variables for the student", prompt: '"What variables do I need to control?"' }
+      ]
+    },
+    returnToHuman: {
+      task: "Revise Your Investigation Design",
+      description: "Based on flaws identified in the AI conversation, revise your procedure.",
+      criteria: ["Variables properly identified and controlled", "Procedure revised to address identified flaws"]
+    },
+    evidence: {
+      artifacts: ["Initial investigation plan (BEFORE AI)", "Chat transcript showing design critique", "Revised procedure"],
+      reflection: "What flaw in your investigation design did you discover?"
+    }
+  },
+  {
+    id: 4,
+    title: "Analyzing & Interpreting Data",
+    standards: "SEP-4",
+    icon: LineChart,
+    description: "Students analyze data to identify patterns, relationships, and anomalies.",
+    humanLift: [
+      { step: "Organize the Data", detail: "Create tables, graphs, or other representations that reveal patterns." },
+      { step: "Identify Patterns", detail: "Look for trends, clusters, outliers, and relationships." },
+      { step: "Quantify Relationships", detail: "Calculate averages, ranges, or other statistics as appropriate." },
+      { step: "Connect to Question", detail: "Determine what the data tells you about your original question." }
+    ],
+    aiExtension: {
+      role: "Data Interrogator",
+      description: "AI challenges student interpretations by probing for alternative explanations—but does not analyze the data.",
+      upholdRigor: {
+        socratic: [
+          { move: "Question pattern validity", prompt: '"I see this pattern in my data. Ask me if the pattern is real or coincidental."' }
+        ],
+        resistance: [
+          { move: "Challenge causal claims", prompt: '"My data shows these two things happen together. Challenge me—does one cause the other?"' }
+        ],
+        complexity: [
+          { move: "Probe for alternative explanations", prompt: '"Based on my data, I conclude this. Ask me about other explanations that might fit."' }
+        ],
+        mirroring: [
+          { move: "Reflect back interpretation logic", prompt: '"Walk back through how I went from data to conclusion."' }
+        ],
+        simulation: [
+          { move: "Test conclusions against new scenarios", prompt: '"If my conclusion is right, what should happen in a new situation?"' }
+        ],
+        information: [
+          { move: "Clarify statistical concepts", prompt: '"What statistical concepts are relevant to my analysis? Explain without applying them."' }
+        ],
+        feedback: [
+          { move: "Identify gaps in analysis", prompt: '"What aspects of my data have I not analyzed? Point to gaps."' }
+        ]
+      },
+      collapseRigor: [
+        { move: "Identifying patterns", prompt: '"What patterns do you see in my data?"' },
+        { move: "Interpreting the data", prompt: '"What does my data show?"' }
+      ]
+    },
+    returnToHuman: {
+      task: "Strengthen Your Data Interpretation",
+      description: "Based on alternative explanations raised in the AI conversation, revise your analysis.",
+      criteria: ["Alternative explanations considered", "Conclusions explicitly connected to data evidence"]
+    },
+    evidence: {
+      artifacts: ["Data tables/graphs (BEFORE AI)", "Chat transcript showing interpretation discussion", "Written analysis"],
+      reflection: "What alternative explanation for your data did the AI help you consider?"
+    }
+  },
+  {
+    id: 5,
+    title: "Constructing Explanations",
+    standards: "SEP-6",
+    icon: Lightbulb,
+    description: "Students construct explanations of phenomena using evidence.",
+    humanLift: [
+      { step: "State the Claim Clearly", detail: "Articulate what you're explaining." },
+      { step: "Gather Relevant Evidence", detail: "Identify data and observations that support the explanation." },
+      { step: "Apply Scientific Principles", detail: "Connect evidence to accepted scientific ideas." },
+      { step: "Address Limitations", detail: "Acknowledge what the explanation doesn't fully account for." }
+    ],
+    aiExtension: {
+      role: "Explanation Challenger",
+      description: "AI pressure-tests explanations by probing reasoning and evidence—but does not construct explanations.",
+      upholdRigor: {
+        socratic: [
+          { move: "Probe for mechanism details", prompt: '"Ask me questions about the step-by-step mechanism of how this phenomenon works."' }
+        ],
+        resistance: [
+          { move: "Challenge evidence-reasoning links", prompt: '"I claim this because of this evidence. Ask me how the evidence actually supports the claim."' }
+        ],
+        complexity: [
+          { move: "Ask about alternative explanations", prompt: '"Ask me what alternative explanations exist and why mine is better supported."' }
+        ],
+        mirroring: [
+          { move: "Reflect back explanation logic", prompt: '"Summarize the logic of my explanation. Does my reasoning sound valid?"' }
+        ],
+        simulation: [
+          { move: "Test explanation against new cases", prompt: '"If my explanation is correct, what should happen in a new situation?"' }
+        ],
+        information: [
+          { move: "Clarify explanation types", prompt: '"What types of scientific explanations exist? Help me categorize mine."' }
+        ],
+        feedback: [
+          { move: "Question completeness", prompt: '"Ask me questions that help me identify gaps in my reasoning."' }
+        ]
+      },
+      collapseRigor: [
+        { move: "Explaining the phenomenon", prompt: '"Why does this phenomenon happen?"' },
+        { move: "Constructing the explanation", prompt: '"Write an explanation for this."' }
+      ]
+    },
+    returnToHuman: {
+      task: "Strengthen Your Scientific Explanation",
+      description: "Based on gaps identified in the AI conversation, revise your explanation.",
+      criteria: ["Evidence-reasoning connections explicit", "Alternative explanations addressed"]
+    },
+    evidence: {
+      artifacts: ["Draft explanation (BEFORE AI)", "Chat transcript showing explanation critique", "Revised explanation"],
+      reflection: "What gap in your reasoning did the AI conversation reveal?"
+    }
+  },
+  {
+    id: 6,
+    title: "Engaging in Argument from Evidence",
+    standards: "SEP-7",
+    icon: MessageSquare,
+    description: "Students construct and defend arguments using evidence.",
+    humanLift: [
+      { step: "State Your Claim", detail: "Clearly articulate the position you're defending." },
+      { step: "Marshal Evidence", detail: "Gather data and observations that support your claim." },
+      { step: "Explain the Reasoning", detail: "Show how the evidence logically supports the claim." },
+      { step: "Anticipate Counterarguments", detail: "Identify what someone who disagrees might say." }
+    ],
+    aiExtension: {
+      role: "Argument Opponent",
+      description: "AI acts as a respectful debate opponent, challenging arguments—but does not construct arguments.",
+      upholdRigor: {
+        socratic: [
+          { move: "Question logical connections", prompt: '"Ask me about whether my reasoning logically connects my evidence to my claim."' }
+        ],
+        resistance: [
+          { move: "Present counterarguments to address", prompt: '"Here\'s my argument. Act like a peer who disagrees and challenge me."' }
+        ],
+        complexity: [
+          { move: "Ask for response to alternative interpretations", prompt: '"Ask me how I would respond to someone who interprets the evidence differently."' }
+        ],
+        mirroring: [
+          { move: "Reflect back argument structure", prompt: '"Summarize the structure of my argument. Does it sound logical?"' }
+        ],
+        simulation: [
+          { move: "Test argument against new evidence", prompt: '"If new evidence came out, how would it affect my argument?"' }
+        ],
+        information: [
+          { move: "Clarify argument components", prompt: '"What are the parts of a scientific argument? Help me identify mine."' }
+        ],
+        feedback: [
+          { move: "Identify gaps in evidence coverage", prompt: '"What aspects of my claim are not supported by evidence?"' }
+        ]
+      },
+      collapseRigor: [
+        { move: "Providing evidence or claims", prompt: '"What evidence supports this claim?"' },
+        { move: "Making the argument", prompt: '"Write an argument for this position."' }
+      ]
+    },
+    returnToHuman: {
+      task: "Revise Your Argument to Address Challenges",
+      description: "Based on counterarguments raised in the AI conversation, revise your argument.",
+      criteria: ["Counterarguments explicitly addressed", "Evidence strengthened"]
+    },
+    evidence: {
+      artifacts: ["Initial argument (BEFORE AI)", "Chat transcript showing argument defense", "Revised argument"],
+      reflection: "What was the strongest counterargument you had to address?"
+    }
+  }
+];
+
+// ============================================
+// SCIENCE FRAMEWORK COMPONENT
+// ============================================
+function ScienceFramework({ onBack }) {
+  const [activeTab, setActiveTab] = useState('overview');
+  const [expandedSkill, setExpandedSkill] = useState(null);
+  const [expandAll, setExpandAll] = useState(false);
+  const [expandedModelParts, setExpandedModelParts] = useState({ part1: true, part2: true, part3: true });
+
+  // Lesson Designer State
+  const [selectedSkillId, setSelectedSkillId] = useState('');
+  const [lessonInputs, setLessonInputs] = useState({ lessonContext: '' });
+  const [selectedMoves, setSelectedMoves] = useState([]);
+  const [expandedPrinciples, setExpandedPrinciples] = useState({});
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [generatedOutputs, setGeneratedOutputs] = useState(null);
+
+  const selectedSkill = scienceSkillsData.find(s => s.id === parseInt(selectedSkillId));
+
+  const toggleModelPart = (part) => {
+    setExpandedModelParts(prev => ({ ...prev, [part]: !prev[part] }));
+  };
+
+  const handleExpandAll = () => {
+    if (expandAll) setExpandedSkill(null);
+    setExpandAll(!expandAll);
+  };
+
+  const handleSkillChange = (e) => {
+    setSelectedSkillId(e.target.value);
+    setSelectedMoves([]);
+    setExpandedPrinciples({});
+    setGeneratedOutputs(null);
+  };
+
+  const handleInputChange = (field, value) => {
+    setLessonInputs(prev => ({ ...prev, [field]: value }));
+  };
+
+  const togglePrincipleExpanded = (principleId) => {
+    setExpandedPrinciples(prev => ({ ...prev, [principleId]: !prev[principleId] }));
+  };
+
+  const handleMoveToggle = (moveKey) => {
+    setSelectedMoves(prev =>
+      prev.includes(moveKey) ? prev.filter(k => k !== moveKey) : [...prev, moveKey]
+    );
+  };
+
+  const getMovesForSkill = (skill) => {
+    if (!skill) return { neutral: {}, uphold: {} };
+    const neutral = {};
+    const uphold = {};
+    Object.entries(skill.aiExtension.upholdRigor).forEach(([principleId, principleMoves]) => {
+      const principle = scienceAiExtensionPrinciples.find(p => p.id === principleId);
+      if (!principle) return;
+      const movesWithMeta = principleMoves.map((move, idx) => ({
+        ...move,
+        principleId,
+        principleName: principle.name,
+        uniqueKey: `${principleId}-${idx}`
+      }));
+      if (principle.tier === 'neutral') {
+        neutral[principleId] = movesWithMeta;
+      } else if (principle.tier === 'uphold') {
+        uphold[principleId] = movesWithMeta;
+      }
+    });
+    return { neutral, uphold };
+  };
+
+  const { neutral: neutralMoves, uphold: upholdMoves } = getMovesForSkill(selectedSkill);
+  const allSelectableMoves = [...Object.values(neutralMoves).flat(), ...Object.values(upholdMoves).flat()];
+
+  const renderPrincipleDropdown = (principleId, moves, tierColor) => {
+    const principle = scienceAiExtensionPrinciples.find(p => p.id === principleId);
+    if (!principle || moves.length === 0) return null;
+    const Icon = principle.icon;
+    const isExpanded = expandedPrinciples[principleId];
+    const selectedCount = moves.filter(m => selectedMoves.includes(m.uniqueKey)).length;
+
+    const colorStyles = {
+      amber: { bg: '#fef3c7', border: '#fbbf24', iconColor: '#d97706' },
+      green: { bg: '#d1fae5', border: '#10b981', iconColor: '#059669' }
+    };
+    const styles = colorStyles[tierColor] || colorStyles.green;
+
+    return (
+      <div key={principleId} className="principle-dropdown" style={{ border: `1px solid ${styles.border}`, borderRadius: 'var(--radius-md)', overflow: 'hidden', marginBottom: '0.5rem' }}>
+        <button
+          onClick={() => togglePrincipleExpanded(principleId)}
+          style={{ width: '100%', padding: '0.875rem 1rem', background: styles.bg, display: 'flex', alignItems: 'center', justifyContent: 'space-between', border: 'none', cursor: 'pointer' }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+            <Icon size={20} style={{ color: styles.iconColor }} />
+            <span style={{ fontWeight: 600, color: 'var(--color-text)' }}>{principle.name}</span>
+            {selectedCount > 0 && (
+              <span style={{ marginLeft: '0.5rem', padding: '0.2rem 0.5rem', background: 'rgba(0,0,0,0.1)', fontSize: '0.7rem', borderRadius: '999px', fontWeight: 600 }}>
+                {selectedCount} selected
+              </span>
+            )}
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>{moves.length} moves</span>
+            {isExpanded ? <ChevronDown size={18} /> : <ChevronRight size={18} />}
+          </div>
+        </button>
+        {isExpanded && (
+          <div style={{ padding: '1rem', background: 'var(--color-surface)', borderTop: '1px solid var(--color-border-subtle)' }}>
+            <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', marginBottom: '0.75rem' }}>{principle.definition}</p>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
+              {moves.map(move => (
+                <label key={move.uniqueKey} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.75rem', padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: `1px solid ${selectedMoves.includes(move.uniqueKey) ? styles.border : 'var(--color-border)'}`, background: selectedMoves.includes(move.uniqueKey) ? styles.bg : 'var(--color-bg)', cursor: 'pointer' }}>
+                  <input type="checkbox" checked={selectedMoves.includes(move.uniqueKey)} onChange={() => handleMoveToggle(move.uniqueKey)} style={{ marginTop: '0.2rem' }} />
+                  <div>
+                    <p style={{ fontWeight: 500, color: 'var(--color-text)', fontSize: '0.9rem' }}>{move.move}</p>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', fontStyle: 'italic', marginTop: '0.25rem' }}>{move.prompt}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  // Science-specific PrincipleDropdown component
+  const SciencePrincipleDropdown = ({ principle, moves, tierColor = 'green' }) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const Icon = principle.icon;
+
+    const colorMap = {
+      green: '#059669',
+      amber: '#d97706',
+      red: '#dc2626'
+    };
+    const iconColor = colorMap[tierColor] || colorMap.green;
+
+    return (
+      <div className="framework-principle-dropdown">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="framework-principle-header"
+        >
+          <div className="framework-principle-left">
+            <Icon size={16} className="principle-icon" style={{ color: iconColor }} />
+            <span className="principle-label">{principle.name}</span>
+            <span className="moves-count">({moves.length} {moves.length === 1 ? 'move' : 'moves'})</span>
+          </div>
+          {isOpen ? <ChevronDown size={16} style={{ color: '#9ca3af' }} /> : <ChevronRight size={16} style={{ color: '#9ca3af' }} />}
+        </button>
+
+        {isOpen && (
+          <div className="framework-principle-content">
+            {moves.map((item, idx) => (
+              <div key={idx} className="framework-move-item">
+                <p className="move-name">{item.move}</p>
+                <p className="move-prompt">{item.prompt}</p>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const renderSkillCard = (skill) => {
+    const isExpanded = expandAll || expandedSkill === skill.id;
+    const IconComponent = skill.icon;
+
+    return (
+      <div key={skill.id} className="skill-card">
+        <button onClick={() => !expandAll && setExpandedSkill(isExpanded ? null : skill.id)} className="skill-card-header">
+          <div className="skill-card-left">
+            <div className="skill-icon">
+              <IconComponent size={24} />
+            </div>
+            <div>
+              <h3 className="skill-title">{skill.title}</h3>
+              <p className="skill-standards">{skill.standards}</p>
+            </div>
+          </div>
+          {isExpanded ? <ChevronUp className="chevron" /> : <ChevronDown className="chevron" />}
+        </button>
+
+        {isExpanded && (
+          <div className="skill-card-content">
+            <p className="skill-description">{skill.description}</p>
+
+            <div className="skill-grid">
+              {/* 1. Human Lift */}
+              <div className="skill-section">
+                <h4 className="skill-section-title">
+                  <span className="section-number human">1</span>
+                  Human Lift (Before AI)
+                </h4>
+                <p className="section-subtitle">Students must complete independently</p>
+                <ul className="human-lift-list">
+                  {skill.humanLift.map((item, idx) => (
+                    <li key={idx}>
+                      <span className="step-name">{idx + 1}. {item.step}:</span> {item.detail}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* 2. AI Usage Taxonomy */}
+              <div className="skill-section">
+                <h4 className="skill-section-title">
+                  <span className="section-number ai">2</span>
+                  AI Usage Taxonomy: {skill.aiExtension.role}
+                </h4>
+                <p className="ai-description">{skill.aiExtension.description}</p>
+
+                {/* Collapse Rigor */}
+                <div className="taxonomy-tier">
+                  <div className="tier-title">
+                    <span className="tier-dot collapse"></span>
+                    <span className="tier-name collapse">Collapse Rigor</span>
+                    <span className="tier-subtitle">— AI performs the cognitive work</span>
+                  </div>
+                  <div className="tier-principles">
+                    <SciencePrincipleDropdown
+                      principle={{ id: 'taskCompletion', name: 'Task Completion', icon: XCircle }}
+                      moves={skill.aiExtension.collapseRigor}
+                      tierColor="red"
+                    />
+                  </div>
+                </div>
+
+                {/* Neutral */}
+                <div className="taxonomy-tier">
+                  <div className="tier-title">
+                    <span className="tier-dot neutral"></span>
+                    <span className="tier-name neutral">Neutral</span>
+                    <span className="tier-subtitle">— AI provides; students decide how to engage</span>
+                  </div>
+                  <div className="tier-principles">
+                    {scienceAiExtensionPrinciples.filter(p => p.tier === 'neutral').map(principle => {
+                      const moves = skill.aiExtension.upholdRigor[principle.id];
+                      if (!moves || moves.length === 0) return null;
+                      return <SciencePrincipleDropdown key={principle.id} principle={principle} moves={moves} tierColor="amber" />;
+                    })}
+                  </div>
+                </div>
+
+                {/* Uphold Rigor */}
+                <div className="taxonomy-tier">
+                  <div className="tier-title">
+                    <span className="tier-dot uphold"></span>
+                    <span className="tier-name uphold">Uphold Rigor</span>
+                    <span className="tier-subtitle">— AI creates conditions requiring student thinking</span>
+                  </div>
+                  <div className="tier-principles">
+                    {scienceAiExtensionPrinciples.filter(p => p.tier === 'uphold').map(principle => {
+                      const moves = skill.aiExtension.upholdRigor[principle.id];
+                      if (!moves || moves.length === 0) return null;
+                      return <SciencePrincipleDropdown key={principle.id} principle={principle} moves={moves} tierColor="green" />;
+                    })}
+                  </div>
+                </div>
+              </div>
+
+              {/* 3. Return to Human */}
+              <div className="skill-section">
+                <h4 className="skill-section-title">
+                  <span className="section-number return">3</span>
+                  Return to Human: {skill.returnToHuman.task}
+                </h4>
+                <p className="return-description">{skill.returnToHuman.description}</p>
+
+                <p className="criteria-label">Success Criteria</p>
+                <ul className="criteria-list">
+                  {skill.returnToHuman.criteria.map((item, idx) => (
+                    <li key={idx}>
+                      <CheckCircle size={14} />
+                      {item}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              {/* 4. Evidence of Thinking */}
+              <div className="skill-section">
+                <h4 className="skill-section-title">
+                  <span className="section-number evidence">4</span>
+                  Evidence of Thinking
+                </h4>
+                <div style={{ marginBottom: '1rem' }}>
+                  <p className="criteria-label" style={{ color: '#6b7280' }}>Artifacts to Collect</p>
+                  <ul className="criteria-list">
+                    {skill.evidence.artifacts.map((item, idx) => (
+                      <li key={idx}>
+                        <CheckCircle size={14} style={{ color: '#6b7280' }} />
+                        {item}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <p className="criteria-label" style={{ color: '#6b7280' }}>Reflection Prompt</p>
+                  <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)', background: 'var(--color-bg)', padding: '0.75rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)', fontStyle: 'italic' }}>
+                    "{skill.evidence.reflection}"
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  return (
+    <div className="app-container">
+      {/* Header */}
+      <header className="app-header">
+        <div className="header-content">
+          <div className="header-top-row">
+            <button onClick={onBack} className="home-btn">
+              <Home size={16} />
+              <span>Home</span>
+            </button>
+          </div>
+          <h1 className="header-title">AI-Enhanced Science Framework: A Research Preview</h1>
+          <p className="header-subtitle">Integrating Generative AI into MS/HS Science Core Instruction</p>
+        </div>
+
+        {/* Navigation */}
+        <nav className="nav-tabs">
+          {['overview', 'framework', 'casestudies', 'designer'].map((tab) => (
+            <button
+              key={tab}
+              onClick={() => setActiveTab(tab)}
+              className={`nav-tab ${activeTab === tab ? 'active' : ''}`}
+            >
+              {tab === 'overview' && 'Overview'}
+              {tab === 'framework' && 'Human-AI-Human in Science'}
+              {tab === 'casestudies' && 'Case Studies'}
+              {tab === 'designer' && 'Apply To Your Content'}
+            </button>
+          ))}
+        </nav>
+      </header>
+
+      <main className="main-content">
+        {activeTab === 'overview' && (
+          <div className="overview-page">
+            {/* Intro text */}
+            <p className="overview-intro-text">
+              This framework is grounded in the NGSS Science and Engineering Practices and the interconnected nature of asking questions, developing models, analyzing data, and constructing explanations. While these practices are inseparable in authentic scientific work, we name specific behaviors to help curriculum developers and teachers intentionally integrate AI literacy into existing content and build students' autonomy and fluency to use AI to deepen their thinking.
+            </p>
+
+            {/* Model Parts */}
+            <div className="model-parts">
+              {/* Part 1 */}
+              <div className="model-part">
+                <button onClick={() => toggleModelPart('part1')} className="model-part-header part1">
+                  <div className="model-part-left">
+                    <span className="part-badge part1">Part 1</span>
+                    <h3>The Human-AI-Human Cycle</h3>
+                  </div>
+                  {expandedModelParts.part1 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
+
+                {expandedModelParts.part1 && (
+                  <div className="model-part-content">
+                    <p>
+                      The HAH Cycle ensures AI enhances rather than replaces scientific thinking. Students engage in substantial cognitive work before AI use, interact with AI as a <strong>thinking partner</strong> rather than an answer source, and return to human judgment for final sensemaking.
+                    </p>
+
+                    <div className="hah-cycle-grid">
+                      <div className="hah-step human-first">
+                        <div className="hah-icon">H</div>
+                        <h4>Human First</h4>
+                        <p>Students observe phenomena, generate questions, design investigations, and draft explanations <strong>before</strong> engaging AI. This ensures they develop their own scientific thinking.</p>
+                      </div>
+                      <div className="hah-step ai-partner">
+                        <div className="hah-icon">AI</div>
+                        <h4>AI as Thinking Partner</h4>
+                        <p>AI creates conditions for deeper thinking through strategic questioning, productive resistance, and targeted feedback. AI <strong>never</strong> provides explanations or answers.</p>
+                      </div>
+                      <div className="hah-step human-final">
+                        <div className="hah-icon">H</div>
+                        <h4>Human Final</h4>
+                        <p>Students revise their thinking based on the AI conversation and exercise <strong>scientific judgment</strong>. They decide which challenges to address and how.</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Part 2 */}
+              <div className="model-part">
+                <button onClick={() => toggleModelPart('part2')} className="model-part-header part2">
+                  <div className="model-part-left">
+                    <span className="part-badge part2">Part 2</span>
+                    <h3>The AI Usage Taxonomy</h3>
+                  </div>
+                  {expandedModelParts.part2 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
+
+                {expandedModelParts.part2 && (
+                  <div className="model-part-content">
+                    <p>
+                      Not all AI use is created equal. This taxonomy classifies AI interactions by their impact on student cognitive engagement—from uses that collapse rigor to those that actively uphold it.
+                    </p>
+
+                    {/* Collapse Rigor Tier */}
+                    <div className="taxonomy-tier" style={{ marginTop: '1.5rem' }}>
+                      <div className="tier-header" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#dc2626' }}></span>
+                        <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '1.1rem' }}>Collapse Rigor</h4>
+                      </div>
+                      <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.75rem' }}>
+                        AI performs the cognitive work; students receive output.
+                      </p>
+                      <div style={{ background: 'var(--color-bg)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '1rem' }}>
+                        <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)' }}>
+                          Examples: AI explains the phenomenon, AI identifies patterns in data, AI constructs the explanation, AI designs the investigation. The student's role is reduced to prompting and accepting output.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Neutral Tier */}
+                    <div className="taxonomy-tier" style={{ marginTop: '1.5rem' }}>
+                      <div className="tier-header" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#d97706' }}></span>
+                        <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '1.1rem' }}>Neutral</h4>
+                      </div>
+                      <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.75rem' }}>
+                        AI provides something useful; students decide whether and how to engage.
+                      </p>
+                      <div className="hah-cycle-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+                        {scienceAiExtensionPrinciples.filter(p => p.tier === 'neutral').map((principle) => {
+                          const Icon = principle.icon;
+                          return (
+                            <div key={principle.id} className="hah-step" style={{ padding: '1rem' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                                <Icon size={18} style={{ color: '#d97706' }} />
+                                <h4 style={{ fontSize: '0.95rem', margin: 0 }}>{principle.name}</h4>
+                              </div>
+                              <p style={{ fontSize: '0.85rem', margin: 0 }}>{principle.definition}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+
+                    {/* Uphold Rigor Tier */}
+                    <div className="taxonomy-tier" style={{ marginTop: '1.5rem' }}>
+                      <div className="tier-header" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                        <span style={{ width: '12px', height: '12px', borderRadius: '50%', background: '#059669' }}></span>
+                        <h4 style={{ fontFamily: 'var(--font-display)', fontWeight: 600, fontSize: '1.1rem' }}>Uphold Rigor</h4>
+                      </div>
+                      <p style={{ color: 'var(--color-text-secondary)', marginBottom: '0.75rem' }}>
+                        AI creates conditions that require student thinking; students must think to respond.
+                      </p>
+                      <div className="hah-cycle-grid" style={{ gridTemplateColumns: 'repeat(3, 1fr)' }}>
+                        {scienceAiExtensionPrinciples.filter(p => p.tier === 'uphold').map((principle) => {
+                          const Icon = principle.icon;
+                          return (
+                            <div key={principle.id} className="hah-step" style={{ padding: '1rem' }}>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                                <Icon size={18} style={{ color: '#059669' }} />
+                                <h4 style={{ fontSize: '0.95rem', margin: 0 }}>{principle.name}</h4>
+                              </div>
+                              <p style={{ fontSize: '0.85rem', margin: 0 }}>{principle.definition}</p>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Part 3 */}
+              <div className="model-part">
+                <button onClick={() => toggleModelPart('part3')} className="model-part-header part3">
+                  <div className="model-part-left">
+                    <span className="part-badge part3">Part 3</span>
+                    <h3>A New Approach to Assessment</h3>
+                  </div>
+                  {expandedModelParts.part3 ? <ChevronUp size={20} /> : <ChevronDown size={20} />}
+                </button>
+
+                {expandedModelParts.part3 && (
+                  <div className="model-part-content">
+                    <p>
+                      The HAH Cycle isn't complete until students demonstrate how they evaluated and integrated (or rejected) AI contributions. This means documenting the evolution of their thinking—from initial observations through AI-challenged reasoning to final explanations.
+                    </p>
+                    <p style={{ marginTop: '1rem' }}>
+                      The framework specifies what artifacts to collect for each practice. Two artifacts apply universally:
+                    </p>
+                    <div className="hah-cycle-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)', marginTop: '1rem' }}>
+                      <div className="hah-step">
+                        <h4>The AI Transcript</h4>
+                        <p style={{ marginBottom: '0.75rem' }}>
+                          The most valuable artifact is the AI transcript itself—a digital record of the student's scientific reasoning in dialogue with AI. This proves the student engaged in genuine scientific discourse.
+                        </p>
+                        <ul className="criteria-list">
+                          <li>
+                            <CheckCircle size={16} />
+                            A shared link to the full chat conversation
+                          </li>
+                          <li>
+                            <CheckCircle size={16} />
+                            Screenshots of moments where they challenged AI or defended their reasoning
+                          </li>
+                        </ul>
+                      </div>
+                      <div className="hah-step">
+                        <h4>The Reflection Statement</h4>
+                        <p style={{ marginBottom: '0.75rem' }}>
+                          At the end of each assignment, students answer three questions:
+                        </p>
+                        <ul className="criteria-list">
+                          <li>
+                            <CheckCircle size={16} />
+                            What question did the AI ask that made you think differently about the phenomenon?
+                          </li>
+                          <li>
+                            <CheckCircle size={16} />
+                            What did you change in your model or explanation based on that challenge?
+                          </li>
+                          <li>
+                            <CheckCircle size={16} />
+                            What AI suggestion did you reject and why?
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === 'framework' && (
+          <div className="framework-page">
+            <div className="framework-header">
+              <div>
+                <h2>Human-AI-Human in Science</h2>
+              </div>
+              <button onClick={handleExpandAll} className="expand-all-btn">
+                {expandAll ? 'Collapse All' : 'Expand All'}
+              </button>
+            </div>
+
+            <p className="framework-intro-text">
+              The HAH cycle is designed to be iterative. Early on, students need explicit scaffolding to engage AI productively — but over time, the structure becomes internalized. As students grow more skilled at prompting and evaluating AI responses, they begin to initiate meaningful AI engagement independently. The goal is fluency: students who instinctively use AI to challenge, extend, and sharpen their thinking rather than to bypass it.
+            </p>
+
+            {scienceSkillsData.map(skill => renderSkillCard(skill))}
+          </div>
+        )}
+
+        {activeTab === 'casestudies' && (
+          <div className="casestudies-page">
+            <section className="casestudies-intro">
+              <h2>Applying the HAH Cycle: OpenSciEd Case Studies</h2>
+              <p>
+                The following case studies illustrate how the Human-AI-Human Cycle applies to specific units from the <strong>OpenSciEd curriculum</strong>. Each example demonstrates how students engage with phenomena and complete authentic scientific work before using AI as a thinking partner.
+              </p>
+              <p>
+                These examples are not scripts—they are models that teachers can adapt to their own phenomena and contexts.
+              </p>
+            </section>
+
+            {/* Case Study 1 */}
+            <CaseStudyCard
+              icon={HelpCircle}
+              iconBg="#fef3c7"
+              iconColor="#d97706"
+              title="Asking Questions: One-Way Mirror Phenomenon"
+              meta="Unit 6.1 Light & Matter • Practice: Asking Questions"
+              humanLift="Students independently observe the one-way mirror phenomenon, record what surprises them, generate questions, categorize them as testable vs. non-testable, and prioritize which would help explain the phenomenon."
+              aiRole="Question Refiner"
+              aiDescription="Students use AI to sharpen and prioritize their questions without generating questions for them."
+              aiPrompts={[
+                { principle: 'Socratic Questioning', icon: HelpCircle, prompt: "Here are my questions about the one-way mirror. Ask me questions that help me figure out what I would actually measure to answer each one." },
+                { principle: 'Productive Resistance', icon: Shield, prompt: "I think my main question is investigable. Challenge me—am I actually investigating or just confirming what I assume?" }
+              ]}
+              returnToHuman="Students revise their question list, selecting the top 2-3 questions to pursue. They explain why these questions are investigable and predict what they might find."
+            />
+
+            {/* Case Study 2 */}
+            <CaseStudyCard
+              icon={Atom}
+              iconBg="#d1fae5"
+              iconColor="#059669"
+              title="Developing Models: Thermal Energy Transfer"
+              meta="Unit 6.2 Thermal Energy • Practice: Developing & Using Models"
+              humanLift="After initial investigations, students independently draw a particle-level model showing what's happening inside and outside both cups—including particles, their motion, and energy transfer."
+              aiRole="Model Challenger"
+              aiDescription="Students use AI to pressure-test their models by asking about limitations and predictions."
+              aiPrompts={[
+                { principle: 'Socratic Questioning', icon: HelpCircle, prompt: "Ask me questions about how the parts of my model connect to each other. What interactions am I showing?" },
+                { principle: 'Productive Resistance', icon: Shield, prompt: "I think my model is accurate. Challenge me—where might it misrepresent what's really happening with the particles?" }
+              ]}
+              returnToHuman="Students revise their models based on limitations identified. Final models include annotations explaining what they changed and why."
+            />
+
+            {/* Case Study 3 */}
+            <CaseStudyCard
+              icon={FlaskConical}
+              iconBg="#cffafe"
+              iconColor="#0891b2"
+              title="Planning Investigations: Chemical Reactions"
+              meta="Unit 7.1 Chemical Reactions & Matter • Practice: Planning Investigations"
+              humanLift="Students independently design an investigation to determine whether mass is conserved during a bath bomb reaction. They identify variables, outline procedure, plan for multiple trials, and anticipate problems."
+              aiRole="Investigation Auditor"
+              aiDescription="Students use AI to challenge their investigation design by probing for flaws and gaps."
+              aiPrompts={[
+                { principle: 'Socratic Questioning', icon: HelpCircle, prompt: "I'm planning to measure mass before and after. Ask me questions about whether that measurement will actually answer my question." },
+                { principle: 'Productive Resistance', icon: Shield, prompt: "I've identified my variables. Challenge me—what variables might I be missing?" }
+              ]}
+              returnToHuman="Students revise their investigation design based on gaps identified. They submit revised procedure with justifications for changes."
+            />
+
+            {/* Case Study 4 */}
+            <CaseStudyCard
+              icon={LineChart}
+              iconBg="#dbeafe"
+              iconColor="#2563eb"
+              title="Analyzing Data: MRE Flameless Heater"
+              meta="Unit 7.2 Chemical Reactions & Energy • Practice: Analyzing Data"
+              humanLift="Students independently create graphs of temperature data, identify patterns (rate of change, maximum temperature, cooling curve), note anomalies, and draft initial interpretations."
+              aiRole="Data Interrogator"
+              aiDescription="Students use AI to challenge their interpretations by probing for alternative explanations."
+              aiPrompts={[
+                { principle: 'Socratic Questioning', icon: HelpCircle, prompt: "I see this pattern in my temperature data. Ask me questions about whether the pattern is real or coincidental." },
+                { principle: 'Productive Resistance', icon: Shield, prompt: "My data shows these two things happen together. Challenge me—does one cause the other?" }
+              ]}
+              returnToHuman="Students revise their data analysis, addressing alternative explanations. Written analysis must explicitly connect patterns to claims about energy transfer."
+            />
+
+            {/* Case Study 5 */}
+            <CaseStudyCard
+              icon={Lightbulb}
+              iconBg="#fae8ff"
+              iconColor="#a855f7"
+              title="Constructing Explanations: M'Kenna's Symptoms"
+              meta="Unit 7.3 Metabolic Reactions • Practice: Constructing Explanations"
+              humanLift="Students independently gather evidence about digestion, cellular respiration, and metabolic reactions. They draft an explanation connecting molecular-level processes to body-level effects."
+              aiRole="Explanation Challenger"
+              aiDescription="Students use AI to pressure-test explanations by probing reasoning and evidence."
+              aiPrompts={[
+                { principle: 'Socratic Questioning', icon: HelpCircle, prompt: "Ask me questions about each step in my causal reasoning. How does molecular damage lead to these body symptoms?" },
+                { principle: 'Productive Resistance', icon: Shield, prompt: "I'm applying this scientific principle to my explanation. Challenge me—am I using it correctly?" }
+              ]}
+              returnToHuman="Students revise their explanation to strengthen evidence-reasoning connections. Final explanation shows clear chain from molecular processes to symptoms."
+            />
+
+            {/* Case Study 6 */}
+            <CaseStudyCard
+              icon={MessageSquare}
+              iconBg="#ffe4e6"
+              iconColor="#e11d48"
+              title="Argument from Evidence: Penguin Evolution"
+              meta="Unit 8.6 Natural Selection & Common Ancestry • Practice: Engaging in Argument"
+              humanLift="After analyzing fossil evidence and anatomical data, students independently construct an argument for how natural selection explains penguin diversity. They marshal evidence and anticipate counterarguments."
+              aiRole="Argument Opponent"
+              aiDescription="Students use AI as a respectful debate opponent, challenging their arguments."
+              aiPrompts={[
+                { principle: 'Socratic Questioning', icon: HelpCircle, prompt: "Ask me questions about whether my reasoning logically connects my fossil evidence to my claim about common ancestry." },
+                { principle: 'Productive Resistance', icon: Shield, prompt: "I'm using this evidence to support natural selection. Challenge me—does it really prove what I think?" }
+              ]}
+              returnToHuman="Students revise their argument to address counterarguments. Final argument explicitly responds to challenges, demonstrating ability to defend claims under scrutiny."
+            />
+
+            {/* Case Study 7 */}
+            <CaseStudyCard
+              icon={BookOpen}
+              iconBg="#e0e7ff"
+              iconColor="#4f46e5"
+              title="Evaluating Information: Ecosystem Dynamics"
+              meta="Unit 7.5 Ecosystem Dynamics • Practice: Obtaining & Evaluating Information"
+              humanLift="Students independently locate and read scientific sources about ecosystem phenomena. They evaluate source credibility, identify key claims, and note where sources agree or conflict."
+              aiRole="Source Evaluator"
+              aiDescription="Students use AI to challenge source evaluation and synthesis."
+              aiPrompts={[
+                { principle: 'Socratic Questioning', icon: HelpCircle, prompt: "Ask me why I chose these sources over others. What criteria am I using to evaluate credibility?" },
+                { principle: 'Productive Resistance', icon: Shield, prompt: "I think this source supports my point. Challenge me—am I reading it correctly?" }
+              ]}
+              returnToHuman="Students synthesize information across sources, noting where they reconciled conflicting claims. Final synthesis demonstrates critical integration of scientific information."
+            />
+
+            {/* Case Study 8 */}
+            <CaseStudyCard
+              icon={Beaker}
+              iconBg="#ffedd5"
+              iconColor="#ea580c"
+              title="Designing Solutions: Homemade Flameless Heater"
+              meta="Unit 7.2 Chemical Reactions & Energy • Practice: Designing Solutions"
+              humanLift="Students independently define criteria and constraints, brainstorm solutions, evaluate trade-offs, and develop a detailed design plan including materials, quantities, and predicted performance."
+              aiRole="Design Reviewer"
+              aiDescription="Students use AI to challenge their design by probing for flaws and unconsidered factors."
+              aiPrompts={[
+                { principle: 'Socratic Questioning', icon: HelpCircle, prompt: "Ask me why I chose these materials and quantities. What criteria am I optimizing for?" },
+                { principle: 'Productive Resistance', icon: Shield, prompt: "I think my design will reach the target temperature. Challenge me—what could make it fall short?" }
+              ]}
+              returnToHuman="Students revise their design based on challenges identified. After testing, they document performance against criteria and what they would change."
+            />
+          </div>
+        )}
+
+        {activeTab === 'designer' && (
+          <div className="lesson-designer">
+            <div className="progress-indicator">
+              <div className="progress-steps">
+                <div className={`progress-step ${selectedSkillId ? 'completed' : 'active'}`}>
+                  <div className="progress-step-number">1</div>
+                  <div className="progress-step-label">Practice</div>
+                </div>
+                <div className="progress-line"><div className={`progress-line-fill ${selectedSkillId ? 'filled' : ''}`}></div></div>
+                <div className={`progress-step ${lessonInputs.lessonContext ? 'completed' : selectedSkillId ? 'active' : ''}`}>
+                  <div className="progress-step-number">2</div>
+                  <div className="progress-step-label">Context</div>
+                </div>
+                <div className="progress-line"><div className={`progress-line-fill ${lessonInputs.lessonContext ? 'filled' : ''}`}></div></div>
+                <div className={`progress-step ${selectedMoves.length > 0 ? 'completed' : lessonInputs.lessonContext ? 'active' : ''}`}>
+                  <div className="progress-step-number">3</div>
+                  <div className="progress-step-label">AI Moves</div>
+                </div>
+                <div className="progress-line"><div className={`progress-line-fill ${selectedMoves.length > 0 ? 'filled' : ''}`}></div></div>
+                <div className={`progress-step ${generatedOutputs ? 'completed' : selectedMoves.length > 0 ? 'active' : ''}`}>
+                  <div className="progress-step-number">4</div>
+                  <div className="progress-step-label">Generate</div>
+                </div>
+              </div>
+            </div>
+
+            <section className="designer-section">
+              <div className="step-header">
+                <span className="step-number" style={{ background: '#23abe1' }}>1</span>
+                <h3>Select Science & Engineering Practice</h3>
+              </div>
+              <p className="section-description">What scientific practice will students engage with?</p>
+              <select value={selectedSkillId} onChange={handleSkillChange} className="skill-select">
+                <option value="">-- Select a practice --</option>
+                {scienceSkillsData.map(skill => (
+                  <option key={skill.id} value={skill.id}>{skill.title} ({skill.standards})</option>
+                ))}
+              </select>
+              {selectedSkill && <p className="skill-description">{selectedSkill.description}</p>}
+            </section>
+
+            <section className="designer-section">
+              <div className="step-header">
+                <span className="step-number" style={{ background: '#23abe1' }}>2</span>
+                <h3>Provide Lesson Context</h3>
+              </div>
+              <p className="section-description">Describe your lesson including phenomenon, investigation, grade level, and curriculum.</p>
+              <textarea
+                placeholder="e.g., 7th grade students are investigating why a special cup keeps drinks cold longer than a regular cup (OpenSciEd Unit 6.2). They've conducted investigations comparing temperature changes and collected data..."
+                value={lessonInputs.lessonContext}
+                onChange={(e) => handleInputChange('lessonContext', e.target.value)}
+                rows={6}
+                className="context-textarea"
+              />
+            </section>
+
+            <section className="designer-section" style={{ opacity: selectedSkill ? 1 : 0.5 }}>
+              <div className="step-header">
+                <span className="step-number" style={{ background: '#23abe1' }}>3</span>
+                <h3>Select AI Moves</h3>
+              </div>
+              <p className="section-description">Select moves from the Neutral and Uphold Rigor tiers that fit this practice.</p>
+
+              {!selectedSkill ? (
+                <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--color-text-muted)', background: 'var(--color-bg)', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)' }}>
+                  <p>Please select a Science & Engineering Practice above to see available AI moves.</p>
+                </div>
+              ) : (
+                <>
+                  <div className="tier-block">
+                    <div className="tier-block-header">
+                      <span className="tier-dot neutral"></span>
+                      <span className="tier-block-label neutral">Neutral — AI Provides, Student Decides</span>
+                    </div>
+                    <div className="principles-list">
+                      {scienceAiExtensionPrinciples.filter(p => p.tier === 'neutral').map(principle => {
+                        const moves = neutralMoves[principle.id];
+                        if (!moves || moves.length === 0) return null;
+                        return renderPrincipleDropdown(principle.id, moves, 'amber');
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="tier-block">
+                    <div className="tier-block-header">
+                      <span className="tier-dot uphold"></span>
+                      <span className="tier-block-label uphold">Uphold Rigor — AI Creates Thinking Conditions</span>
+                    </div>
+                    <div className="principles-list">
+                      {scienceAiExtensionPrinciples.filter(p => p.tier === 'uphold').map(principle => {
+                        const moves = upholdMoves[principle.id];
+                        if (!moves || moves.length === 0) return null;
+                        return renderPrincipleDropdown(principle.id, moves, 'green');
+                      })}
+                    </div>
+                  </div>
+
+                  {selectedMoves.length > 0 && (
+                    <div className="selection-summary">
+                      <p><strong>{selectedMoves.length} move{selectedMoves.length !== 1 ? 's' : ''} selected</strong></p>
+                    </div>
+                  )}
+
+                  <div className="generate-section" style={{ marginTop: '1.5rem' }}>
+                    <button
+                      onClick={() => {}}
+                      disabled={selectedMoves.length === 0 || isGenerating}
+                      className="generate-button"
+                      style={{ background: selectedMoves.length === 0 || isGenerating ? '#d1d5db' : '#23abe1' }}
+                    >
+                      <Sparkles size={20} />
+                      Generate Lesson Materials
+                    </button>
+                  </div>
+                </>
+              )}
+            </section>
+          </div>
+        )}
+      </main>
+
+    </div>
+  );
+}
 
 // ============================================
 // MATH FRAMEWORK COMPONENT
@@ -2030,10 +3195,16 @@ function App() {
   return (
     <div className="app-container">
       {currentView === 'landing' && (
-        <LandingPage onSelectMath={() => setCurrentView('math')} />
+        <LandingPage
+          onSelectMath={() => setCurrentView('math')}
+          onSelectScience={() => setCurrentView('science')}
+        />
       )}
       {currentView === 'math' && (
         <MathFramework onBack={() => setCurrentView('landing')} />
+      )}
+      {currentView === 'science' && (
+        <ScienceFramework onBack={() => setCurrentView('landing')} />
       )}
     </div>
   );
