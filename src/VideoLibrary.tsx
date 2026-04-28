@@ -223,7 +223,7 @@ function PlatformSection({
    ============================================ */
 
 export default function VideoLibrary() {
-  const [openPlatform, setOpenPlatform] = useState<string | null>('google')
+  const [openPlatform, setOpenPlatform] = useState<string | null>(null)
 
   const toggle = useCallback((id: string) => {
     setOpenPlatform(prev => (prev === id ? null : id))
@@ -233,13 +233,13 @@ export default function VideoLibrary() {
     <>
       <header className="site-header">
         <div className="header-inner">
-          <span className="lib-wordmark">AI Innovation Video Library</span>
+          <span className="lib-wordmark">AI Use Case Video Library</span>
         </div>
       </header>
 
       <section className="hero">
         <div className="hero-inner">
-          <div className="hero-label">AI Innovation</div>
+          <div className="hero-label">AI Use Cases</div>
           <h1>
             AI Use Case<br />
             <em>Video Library</em>
