@@ -50,6 +50,16 @@ const claudeVideos = [
     href: 'https://www.loom.com/share/0b647de16ca743418e89cd3bf0a3b0a4',
     tool: 'Claude',
   },
+  {
+    title: 'Make infographics (and more!) with Claude Design',
+    href: 'https://www.loom.com/share/349964a429d1400bb0511cd3623d1616',
+    tool: 'Claude',
+  },
+  {
+    title: 'Generate decks for your lessons',
+    href: 'https://www.loom.com/share/896984e7dbc34edea991e0e2a05eda2e',
+    tool: 'Claude',
+  },
 ]
 
 const platforms = [
