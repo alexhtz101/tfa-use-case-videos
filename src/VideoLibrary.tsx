@@ -9,27 +9,37 @@ import './VideoLibrary.css'
 const googleVideos = [
   {
     title: 'Engage AI as a sparring partner to unlock instructional ideas',
-    src: 'https://www.loom.com/embed/c4c18a3b092a485badf4580199088310',
+    href: 'https://www.loom.com/share/c4c18a3b092a485badf4580199088310',
     tool: 'Gemini',
   },
   {
     title: 'Create multimodal resources with Notebook LM',
-    src: 'https://www.loom.com/embed/9c55693aae4342c9b6f39734668ddd35',
+    href: 'https://www.loom.com/share/9c55693aae4342c9b6f39734668ddd35',
     tool: 'NotebookLM',
   },
   {
     title: 'Develop interactive visuals using canvas in Gemini',
-    src: 'https://www.loom.com/embed/b42a6f63c7c54edfa9b61d0a566bec51',
+    href: 'https://www.loom.com/share/b42a6f63c7c54edfa9b61d0a566bec51',
     tool: 'Gemini',
   },
   {
     title: 'Produce songs to support learning in Gemini',
-    src: 'https://www.loom.com/embed/be67d94df8bf4219bece5d3a6d0854a1',
+    href: 'https://www.loom.com/share/be67d94df8bf4219bece5d3a6d0854a1',
     tool: 'Gemini',
   },
   {
     title: 'Make visuals and videos with Nano Banana',
-    src: 'https://www.loom.com/embed/22f7faf7cc7f4e19988b692355c83b47',
+    href: 'https://www.loom.com/share/22f7faf7cc7f4e19988b692355c83b47',
+    tool: 'Gemini',
+  },
+  {
+    title: 'Make engaging slide decks with Gemini',
+    href: 'https://www.loom.com/share/e86821cc71a74b4b8a258f87988eccf7',
+    tool: 'Gemini',
+  },
+  {
+    title: 'Leverage Gemini in Google Drive',
+    href: 'https://www.loom.com/share/c7f38a3ab60c4b5dae0d599cf479d2cd',
     tool: 'Gemini',
   },
 ]
@@ -37,7 +47,7 @@ const googleVideos = [
 const claudeVideos = [
   {
     title: 'Automate complex and recurring workflows with Claude Skills',
-    src: 'https://www.loom.com/embed/0b647de16ca743418e89cd3bf0a3b0a4',
+    href: 'https://www.loom.com/share/0b647de16ca743418e89cd3bf0a3b0a4',
     tool: 'Claude',
   },
 ]
@@ -48,7 +58,7 @@ const platforms = [
     name: 'Google',
     tagline: 'Gemini · NotebookLM · and more',
     description:
-      'Explore how Google\'s AI tools — Gemini and NotebookLM — can power instructional innovation, multimodal content creation, and creative learning experiences.',
+      "Explore how Google's AI tools — Gemini and NotebookLM — can power instructional creativity, multimodal content creation, and engaging learning experiences.",
     videos: googleVideos,
     accentClass: 'platform-google',
   },
@@ -64,30 +74,23 @@ const platforms = [
 ]
 
 /* ============================================
-   HELPERS
-   ============================================ */
-
-function buildLoomSrc(src: string): string {
-  const sep = src.includes('?') ? '&' : '?'
-  return `${src}${sep}hide_owner=true&hide_share=true&hide_title=true&hideEmbedTopBar=true`
-}
-
-/* ============================================
    ICONS
    ============================================ */
-
-function PlayIcon() {
-  return (
-    <svg viewBox="0 0 24 24" fill="currentColor">
-      <polygon points="6,3 20,12 6,21" />
-    </svg>
-  )
-}
 
 function ChevronDown({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <polyline points="5 8 10 13 15 8" />
+    </svg>
+  )
+}
+
+function ExternalLinkIcon() {
+  return (
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M6 3H3a1 1 0 0 0-1 1v9a1 1 0 0 0 1 1h9a1 1 0 0 0 1-1v-3" />
+      <path d="M10 2h4v4" />
+      <line x1="14" y1="2" x2="7" y2="9" />
     </svg>
   )
 }
@@ -114,62 +117,22 @@ function ClaudeIcon() {
 }
 
 /* ============================================
-   LIBRARY VIDEO CARD — thumbnail + title
+   VIDEO LIST ITEM — links out to Loom
    ============================================ */
 
-function LibraryVideoCard({ video }: { video: { title: string; src: string; tool: string } }) {
-  const [isPlaying, setIsPlaying] = useState(false)
-
+function VideoListItem({ video, index }: { video: { title: string; href: string; tool: string }; index: number }) {
   return (
-    <div className="lib-card">
-      <div className="lib-card-media">
-        {isPlaying ? (
-          <div className="lib-card-embed">
-            <iframe
-              src={buildLoomSrc(video.src)}
-              title={video.title}
-              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-              allowFullScreen
-            />
-          </div>
-        ) : (
-          <button
-            className="lib-card-overlay"
-            onClick={() => setIsPlaying(true)}
-            aria-label={`Play: ${video.title}`}
-          >
-            <div className="lib-card-overlay-bg" />
-            <div className="lib-card-play-btn">
-              <PlayIcon />
-            </div>
-            <span className="lib-card-play-label">Watch video</span>
-          </button>
-        )}
-      </div>
-      <div className="lib-card-meta">
-        <span className="lib-card-tool">{video.tool}</span>
-        <h3 className="lib-card-title">{video.title}</h3>
-      </div>
-    </div>
-  )
-}
-
-/* ============================================
-   COMING SOON PLACEHOLDER
-   ============================================ */
-
-function ComingSoon() {
-  return (
-    <div className="lib-coming-soon">
-      <div className="lib-coming-soon-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-          <circle cx="12" cy="12" r="10" />
-          <path d="M12 6v6l4 2" strokeLinecap="round" />
-        </svg>
-      </div>
-      <p className="lib-coming-soon-title">Videos coming soon</p>
-      <p className="lib-coming-soon-body">Claude use case videos are being added. Check back shortly.</p>
-    </div>
+    <a
+      href={video.href}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="lib-list-item"
+    >
+      <span className="lib-list-number">{index + 1}</span>
+      <span className="lib-list-tool">{video.tool}</span>
+      <span className="lib-list-title">{video.title}</span>
+      <span className="lib-list-icon"><ExternalLinkIcon /></span>
+    </a>
   )
 }
 
@@ -197,9 +160,7 @@ function PlatformSection({
           <span className="lib-platform-tagline">{platform.tagline}</span>
         </div>
         <span className="lib-platform-count">
-          {platform.videos.length > 0
-            ? `${platform.videos.length} video${platform.videos.length !== 1 ? 's' : ''}`
-            : 'Coming soon'}
+          {platform.videos.length} video{platform.videos.length !== 1 ? 's' : ''}
         </span>
         <ChevronDown className="lib-platform-chevron" />
       </button>
@@ -208,15 +169,11 @@ function PlatformSection({
         <div className="lib-platform-body-inner">
           <div className="lib-platform-content">
             <p className="lib-platform-description">{platform.description}</p>
-            {platform.videos.length > 0 ? (
-              <div className="lib-video-grid">
-                {platform.videos.map((video, i) => (
-                  <LibraryVideoCard key={i} video={video} />
-                ))}
-              </div>
-            ) : (
-              <ComingSoon />
-            )}
+            <div className="lib-video-list">
+              {platform.videos.map((video, i) => (
+                <VideoListItem key={i} video={video} index={i} />
+              ))}
+            </div>
           </div>
         </div>
       </div>
@@ -251,7 +208,7 @@ export default function VideoLibrary() {
             <em>Video Library</em>
           </h1>
           <p className="hero-subtitle">
-            Short walkthroughs showcasing innovative ways educators and leaders are using AI tools from Google and Anthropic.
+            Short walkthroughs showcasing how educators and leaders are using AI tools from Google and Anthropic.
           </p>
         </div>
       </section>

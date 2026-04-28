@@ -245,191 +245,87 @@ body {
 }
 
 /* ==========================================
-   VIDEO GRID
+   VIDEO LIST
    ========================================== */
 
-.lib-video-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-}
-
-/* ==========================================
-   LIBRARY VIDEO CARD
-   ========================================== */
-
-.lib-card {
-  background: #fff;
-  border: 1px solid var(--lib-cream-dark);
-  border-radius: 12px;
-  overflow: hidden;
-  transition: box-shadow 0.3s var(--ease-out-quart), border-color 0.3s, transform 0.3s var(--ease-out-quart);
-}
-
-.lib-card:hover {
-  box-shadow: 0 6px 20px rgba(28, 56, 56, 0.1);
-  border-color: var(--lib-sage-mid);
-  transform: translateY(-2px);
-}
-
-.lib-card-media {
-  position: relative;
-  width: 100%;
-}
-
-.lib-card-embed {
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%;
-  background: var(--lib-dark);
-}
-
-.lib-card-embed iframe {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  border: none;
-}
-
-.lib-card-overlay {
-  display: block;
-  position: relative;
-  width: 100%;
-  padding-bottom: 56.25%;
-  background: none;
-  border: none;
-  cursor: pointer;
-  overflow: hidden;
-}
-
-.lib-card-overlay-bg {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(145deg, var(--lib-dark) 0%, #284848 40%, #1a3030 100%);
-  transition: opacity 0.3s;
-}
-
-.lib-card-overlay:hover .lib-card-overlay-bg {
-  opacity: 0.88;
-}
-
-.lib-card-play-btn {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -55%);
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: rgba(122, 181, 160, 0.2);
-  border: 2px solid rgba(122, 181, 160, 0.4);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: background 0.3s, transform 0.3s, border-color 0.3s;
-  z-index: 1;
-}
-
-.lib-card-overlay:hover .lib-card-play-btn {
-  background: rgba(122, 181, 160, 0.35);
-  border-color: var(--lib-sage);
-  transform: translate(-50%, -55%) scale(1.1);
-}
-
-.lib-card-play-btn svg {
-  width: 18px;
-  height: 18px;
-  color: var(--lib-sage);
-  margin-left: 3px;
-}
-
-.lib-card-play-label {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, 20px);
-  font-family: var(--font-body);
-  font-size: 12px;
-  font-weight: 600;
-  color: rgba(240, 232, 223, 0.65);
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  white-space: nowrap;
-  z-index: 1;
-}
-
-.lib-card-meta {
-  padding: 16px 18px 18px;
+.lib-video-list {
   display: flex;
   flex-direction: column;
-  gap: 8px;
 }
 
-.lib-card-tool {
-  display: inline-block;
+.lib-list-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.18s, transform 0.18s var(--ease-out-quart);
+  cursor: pointer;
+}
+
+.lib-list-item:hover {
+  background: #fff;
+  transform: translateX(3px);
+}
+
+.lib-list-item:hover .lib-list-title {
+  color: var(--lib-dark);
+}
+
+.lib-list-item:hover .lib-list-icon {
+  color: var(--lib-sage);
+  opacity: 1;
+}
+
+.lib-list-number {
   font-family: var(--font-body);
-  font-size: 11px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--lib-text-muted);
+  width: 18px;
+  flex-shrink: 0;
+  text-align: right;
+}
+
+.lib-list-tool {
+  font-family: var(--font-body);
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--lib-sage);
   background: var(--lib-sage-light);
-  padding: 3px 10px;
+  padding: 2px 8px;
   border-radius: 4px;
-  align-self: flex-start;
+  flex-shrink: 0;
+  white-space: nowrap;
 }
 
-.lib-card-title {
+.lib-list-title {
   font-family: var(--font-body);
   font-size: 15px;
-  font-weight: 600;
-  color: var(--lib-dark);
-  line-height: 1.45;
+  font-weight: 500;
+  color: var(--lib-text-muted);
+  line-height: 1.4;
+  flex: 1;
+  transition: color 0.18s;
 }
 
-/* ==========================================
-   COMING SOON
-   ========================================== */
-
-.lib-coming-soon {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 48px 24px;
-  background: #fff;
-  border: 1px dashed var(--lib-cream-dark);
-  border-radius: 12px;
+.lib-list-icon {
+  width: 15px;
+  height: 15px;
+  color: var(--lib-text-muted);
+  opacity: 0.4;
+  flex-shrink: 0;
+  transition: color 0.18s, opacity 0.18s;
 }
 
-.lib-coming-soon-icon {
-  width: 48px;
-  height: 48px;
-  color: var(--lib-cream-dark);
-  margin-bottom: 16px;
-}
-
-.lib-coming-soon-icon svg {
+.lib-list-icon svg {
   width: 100%;
   height: 100%;
 }
 
-.lib-coming-soon-title {
-  font-family: var(--font-display);
-  font-size: 20px;
-  font-weight: 400;
-  color: var(--lib-dark);
-  margin-bottom: 8px;
-}
-
-.lib-coming-soon-body {
-  font-size: 14px;
-  color: var(--lib-text-muted);
-  max-width: 320px;
-  line-height: 1.6;
-}
 
 /* ==========================================
    FOOTER
@@ -462,12 +358,6 @@ body {
 /* ==========================================
    RESPONSIVE
    ========================================== */
-
-@media (max-width: 720px) {
-  .lib-video-grid {
-    grid-template-columns: 1fr;
-  }
-}
 
 @media (max-width: 640px) {
   .lib-platform-trigger {
