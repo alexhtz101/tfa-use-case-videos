@@ -34,7 +34,13 @@ const googleVideos = [
   },
 ]
 
-const claudeVideos: { title: string; src: string; tool: string }[] = []
+const claudeVideos = [
+  {
+    title: 'Automate complex and recurring workflows with Claude Skills',
+    src: 'https://www.loom.com/embed/0b647de16ca743418e89cd3bf0a3b0a4',
+    tool: 'Claude',
+  },
+]
 
 const platforms = [
   {
